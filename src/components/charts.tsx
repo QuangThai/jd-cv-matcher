@@ -44,8 +44,8 @@ export function ScoreBreakdownChart({ analysis }: Props) {
 
   return (
     <div className="w-full animate-fade-in">
-      <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-3">
-        Score Breakdown — {analysis.candidateName ?? "Unknown"}
+      <h4 className="eyebrow mb-4">
+        Score chart — {analysis.candidateName ?? "Unknown"}
       </h4>
       <ResponsiveContainer width="100%" height={220}>
         <BarChart
@@ -64,15 +64,16 @@ export function ScoreBreakdownChart({ analysis }: Props) {
             formatter={(value: unknown) => [`${value}/100`, "Score"]}
             contentStyle={{
               borderRadius: "8px",
-              border: "1px solid hsl(var(--border))",
+              border: "1px solid #d9deeb",
               fontSize: "12px",
+              backgroundColor: "#ffffff",
             }}
           />
           <Bar
             dataKey="score"
             radius={[0, 4, 4, 0]}
             maxBarSize={16}
-            fill="hsl(var(--primary))"
+            fill="#1a91f0"
           />
         </BarChart>
       </ResponsiveContainer>
@@ -98,23 +99,21 @@ export function RadarComparisonChart({ analyses }: RadarProps) {
   }, [analyses]);
 
   const colors = [
-    "hsl(var(--primary))",
-    "hsl(142, 76%, 36%)",
-    "hsl(38, 92%, 50%)",
-    "hsl(262, 83%, 58%)",
-    "hsl(0, 72%, 51%)",
+    "#1a91f0",
+    "#5660e8",
+    "#016fd0",
+    "#1a1c6a",
+    "#828ba2",
   ];
 
   if (analyses.length === 0) return null;
 
   return (
     <div className="w-full animate-fade-in">
-      <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-3">
-        Candidate Comparison — Radar
-      </h4>
+      <h4 className="eyebrow mb-4">Candidate comparison</h4>
       <ResponsiveContainer width="100%" height={300}>
         <RadarChart data={data} margin={{ top: 10, right: 30, bottom: 10, left: 10 }}>
-          <PolarGrid stroke="hsl(var(--border))" />
+          <PolarGrid stroke="#d9deeb" />
           <PolarAngleAxis
             dataKey="category"
             tick={{ fontSize: 10 }}
@@ -163,9 +162,7 @@ export function ScoreDistributionChart({ analyses }: DistributionProps) {
 
   return (
     <div className="w-full animate-fade-in">
-      <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-3">
-        Overall Score Comparison
-      </h4>
+      <h4 className="eyebrow mb-4">Overall scores</h4>
       <ResponsiveContainer width="100%" height={200}>
         <BarChart
           data={data}
@@ -182,15 +179,16 @@ export function ScoreDistributionChart({ analyses }: DistributionProps) {
             formatter={(value: unknown) => [`${value}/100`, "Score"]}
             contentStyle={{
               borderRadius: "8px",
-              border: "1px solid hsl(var(--border))",
+              border: "1px solid #d9deeb",
               fontSize: "12px",
+              backgroundColor: "#ffffff",
             }}
           />
           <Bar
             dataKey="score"
             radius={[4, 4, 0, 0]}
             maxBarSize={40}
-            fill="hsl(var(--primary))"
+            fill="#1a91f0"
           />
         </BarChart>
       </ResponsiveContainer>

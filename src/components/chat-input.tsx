@@ -9,17 +9,34 @@ type Props = {
   placeholder?: string;
 };
 
+function SendIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      viewBox="0 0 24 24"
+      aria-hidden
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
+      />
+    </svg>
+  );
+}
+
 export function ChatInput({ onSend, disabled, placeholder }: Props) {
   const [value, setValue] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  // Auto-resize textarea
   useEffect(() => {
     const el = textareaRef.current;
-    if (el) {
-      el.style.height = "auto";
-      el.style.height = Math.min(el.scrollHeight, 120) + "px";
-    }
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${Math.min(el.scrollHeight, 120)}px`;
   }, [value]);
 
   const handleSend = () => {
@@ -36,50 +53,45 @@ export function ChatInput({ onSend, disabled, placeholder }: Props) {
     }
   };
 
+  const canSend = value.trim().length > 0 && !disabled;
+
   return (
-    <div className="flex items-end gap-2 border-t border-border/40 bg-background p-3">
-      <textarea
-        ref={textareaRef}
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder={placeholder ?? "Ask about the analysis results..."}
-        disabled={disabled}
-        rows={1}
-        className={cn(
-          "min-h-[40px] max-h-[120px] w-full resize-none rounded-xl border border-border/60",
-          "bg-muted/30 px-4 py-2.5 text-sm placeholder:text-muted-foreground/60",
-          "focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50",
-          "disabled:opacity-50 disabled:cursor-not-allowed",
-          "transition-colors"
-        )}
-      />
-      <button
-        onClick={handleSend}
-        disabled={!value.trim() || disabled}
-        className={cn(
-          "shrink-0 rounded-xl px-4 py-2.5 text-sm font-medium transition-all",
-          "bg-primary text-primary-foreground",
-          "hover:bg-primary/90 active:scale-[0.97]",
-          "disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100",
-          "flex items-center gap-1.5"
-        )}
-      >
-        <svg
-          className="size-4"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2}
-          viewBox="0 0 24 24"
+    <div className="border-t border-chalk bg-mist/30 p-4 sm:p-5">
+      <div className="flex items-end gap-3 rounded-xl border border-chalk bg-paper p-3 transition-[border-color] duration-150 focus-within:border-signal-blue">
+        <textarea
+          ref={textareaRef}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder={placeholder ?? "Ask about the analysis results..."}
+          disabled={disabled}
+          rows={1}
+          className={cn(
+            "chat-textarea min-h-[44px] max-h-[120px] flex-1 resize-none border-0 bg-transparent shadow-none",
+            "px-2 py-2.5 text-sm leading-relaxed text-ink placeholder:text-fog",
+            "outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0",
+            "disabled:cursor-not-allowed disabled:opacity-50"
+          )}
+        />
+        <button
+          type="button"
+          onClick={handleSend}
+          disabled={!canSend}
+          aria-label="Send message"
+          className={cn(
+            "flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-all",
+            "bg-signal-blue text-paper hover:bg-deep-signal",
+            "outline-none focus-visible:ring-2 focus-visible:ring-signal-blue/25 focus-visible:ring-offset-2 focus-visible:ring-offset-paper",
+            "disabled:cursor-not-allowed disabled:bg-ash disabled:text-fog",
+            "active:scale-95 disabled:active:scale-100"
+          )}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M5 12h14M12 5l7 7-7 7"
-          />
-        </svg>
-        Send
-      </button>
+          <SendIcon className="size-4" />
+        </button>
+      </div>
+      <p className="mt-2 text-center text-xs text-fog">
+        Enter to send · Shift+Enter for new line
+      </p>
     </div>
   );
 }

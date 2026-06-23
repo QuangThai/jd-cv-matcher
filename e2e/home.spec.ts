@@ -143,7 +143,7 @@ test.describe("Atlas Match - Home Page", () => {
     await page.getByRole("button", { name: /Start Analysis/i }).click();
 
     // Results should show
-    await expect(page.getByText("Test Engineer Role")).toBeVisible({ timeout: 15000 });
+    await expect(page.getByText("Test Engineer Role").first()).toBeVisible({ timeout: 15000 });
     await expect(page.getByText("Alice Smith").first()).toBeVisible();
     await expect(page.getByText("Good Match").first()).toBeVisible();
     await expect(page.getByText("Recommend").first()).toBeVisible();
@@ -227,7 +227,7 @@ test.describe("Atlas Match - Home Page", () => {
     await f.setFiles({ name: "cv.txt", mimeType: "text/plain", buffer: Buffer.from("Alice CV") });
 
     await page.getByRole("button", { name: /Start Analysis/i }).click();
-    await expect(page.getByText("Test Role")).toBeVisible({ timeout: 15000 });
+    await expect(page.getByText("Test Role").first()).toBeVisible({ timeout: 15000 });
 
     // Open ChatPanel
     await page.getByText("Ask Atlas").click();

@@ -7,27 +7,27 @@ type Props = {
   label?: string;
 };
 
-export function SuggestedQuestions({ questions, onSelect, disabled, label }: Props) {
+export function SuggestedQuestions({
+  questions,
+  onSelect,
+  disabled,
+  label,
+}: Props) {
   if (questions.length === 0) return null;
 
   return (
-    <div className="space-y-2 px-3 pt-2">
-      <p className="text-xs font-medium text-muted-foreground/70">
-        {label ?? "Try asking:"}
-      </p>
-      <div className="flex flex-wrap gap-1.5">
+    <div className="space-y-3 border-t border-chalk bg-paper px-4 py-4 sm:px-5">
+      <p className="eyebrow">{label ?? "Try asking"}</p>
+      <div className="flex flex-wrap gap-2">
         {questions.map((q, i) => (
           <button
             key={i}
+            type="button"
             onClick={() => onSelect(q)}
             disabled={disabled}
-            className="inline-flex items-center rounded-full border border-border/50 bg-muted/30 
-                       px-3 py-1 text-xs font-medium text-muted-foreground 
-                       hover:bg-muted/60 hover:text-foreground 
-                       disabled:opacity-40 disabled:cursor-not-allowed
-                       transition-colors whitespace-nowrap"
+            className="inline-flex max-w-full items-center rounded-full border border-chalk bg-lavender-wash/40 px-4 py-2 text-left text-xs font-medium text-ink transition-colors hover:border-ash hover:bg-lavender-wash disabled:cursor-not-allowed disabled:opacity-40"
           >
-            {q}
+            <span className="line-clamp-2">{q}</span>
           </button>
         ))}
       </div>

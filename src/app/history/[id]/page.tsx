@@ -6,12 +6,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { AppHeader } from "@/components/app-header";
 import { PageFooter } from "@/components/page-footer";
-import { JDSummaryCard } from "@/components/jd-summary-card";
-import { CandidateOverviewTable } from "@/components/candidate-overview-table";
-import { RankingTable } from "@/components/ranking-table";
-import { CandidateAnalysisCard } from "@/components/candidate-analysis-card";
-import { FinalRecommendationCard } from "@/components/final-recommendation-card";
-import { ChatPanel } from "@/components/chat-panel";
+import { AnalysisResultsView } from "@/components/analysis-results-view";
 import type { MatchReport } from "@/lib/types/match";
 
 export default function AnalysisDetailPage({
@@ -19,7 +14,7 @@ export default function AnalysisDetailPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { status } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
   const [report, setReport] = useState<MatchReport | null>(null);
   const [title, setTitle] = useState("");
@@ -41,8 +36,14 @@ export default function AnalysisDetailPage({
     setLoading(true);
     fetch(`/api/analyses/${id}`)
       .then(async (res) => {
-        if (res.status === 401) { router.push("/auth/signin"); return null; }
-        if (res.status === 404) { setError("Analysis not found"); return null; }
+        if (res.status === 401) {
+          router.push("/auth/signin");
+          return null;
+        }
+        if (res.status === 404) {
+          setError("Analysis not found");
+          return null;
+        }
         if (!res.ok) throw new Error("Failed to load");
         return res.json();
       })
@@ -73,13 +74,27 @@ export default function AnalysisDetailPage({
         <AppHeader />
         <div className="flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center">
           <div className="flex h-14 w-14 items-center justify-center rounded-lg border border-chalk bg-mist">
-            <svg className="size-6 text-fog" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+            <svg
+              className="size-6 text-fog"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
+              />
             </svg>
           </div>
           <h1 className="text-xl font-medium text-carbon">Analysis not found</h1>
           <p className="text-sm text-pencil">{error}</p>
-          <Link href="/history" className="text-sm text-signal-blue hover:underline">
+          <Link
+            href="/history"
+            className="text-sm text-signal-blue hover:underline"
+          >
             ← Back to history
           </Link>
         </div>
@@ -95,42 +110,15 @@ export default function AnalysisDetailPage({
       <AppHeader />
 
       <main className="flex-1 py-10 sm:py-14">
-        <div className="page-container mx-auto max-w-5xl space-y-10">
-          <div className="flex items-center justify-between gap-4">
-            <Link
-              href="/history"
-              className="text-sm text-pencil transition-colors hover:text-signal-blue"
-            >
-              ← History
-            </Link>
-            <h1 className="max-w-md truncate text-lg font-medium text-carbon">
-              {title}
-            </h1>
-          </div>
-
-          <div className="animate-fade-in space-y-10">
-            <JDSummaryCard summary={report.jdSummary} />
-            <CandidateOverviewTable candidates={report.candidateOverview} />
-            <RankingTable ranking={report.candidateRanking} />
-
-            <div className="stagger-children space-y-6">
-              {report.candidateAnalyses.map((analysis) => {
-                const rank = report.candidateRanking.find(
-                  (r) => r.candidateId === analysis.candidateId
-                );
-                return (
-                  <CandidateAnalysisCard
-                    key={analysis.candidateId}
-                    analysis={analysis}
-                    rank={rank?.rank}
-                  />
-                );
-              })}
-            </div>
-
-            <FinalRecommendationCard recommendation={report.finalRecommendation} />
-            <ChatPanel report={report} />
-          </div>
+        <div className="page-container mx-auto max-w-5xl">
+          <AnalysisResultsView
+            report={report}
+            session={session}
+            pageTitle={title}
+            backLabel="History"
+            hideSaveActions
+            onNewAnalysis={() => router.push("/history")}
+          />
         </div>
       </main>
 

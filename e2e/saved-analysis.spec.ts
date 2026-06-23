@@ -68,10 +68,12 @@ test.describe("Saved Analysis & History", () => {
     await f.setFiles({ name: "cv.txt", mimeType: "text/plain", buffer: Buffer.from("Alice CV") });
 
     await page.getByRole("button", { name: /Start Analysis/i }).click();
-    await expect(page.getByText("Test Engineer Role")).toBeVisible({ timeout: 15000 });
+    await expect(page.getByText("Test Engineer Role").first()).toBeVisible({ timeout: 15000 });
 
     // "Sign in to save analysis" should appear since not authenticated
-    await expect(page.getByText("Sign in to save analysis")).toBeVisible();
+    // Try scrolling down to ensure the button is in view
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await expect(page.getByText("Sign in to save").first()).toBeVisible({ timeout: 10000 });
   });
 
   test("shows history page with mocked data", async ({ page }) => {
@@ -126,10 +128,12 @@ test.describe("PDF Export & Charts", () => {
     await f.setFiles({ name: "cv.txt", mimeType: "text/plain", buffer: Buffer.from("Alice CV") });
 
     await page.getByRole("button", { name: /Start Analysis/i }).click();
-    await expect(page.getByText("Test Engineer Role")).toBeVisible({ timeout: 15000 });
+    await expect(page.getByText("Test Engineer Role").first()).toBeVisible({ timeout: 15000 });
 
     // PDF button should be visible (shows "Sign in" variant since unauthenticated)
-    await expect(page.getByText("Sign in to save analysis")).toBeVisible();
+    // Try scrolling down to ensure the button is in view
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await expect(page.getByText("Sign in to save").first()).toBeVisible({ timeout: 10000 });
   });
 
   test("shows chart placeholders in results", async ({ page }) => {

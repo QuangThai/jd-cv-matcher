@@ -193,6 +193,32 @@
     @apply text-[31px] font-normal text-carbon;
     line-height: 1.14;
   }
+
+  .results-hero {
+    @apply p-6 sm:p-8;
+  }
+
+  .analysis-section-card {
+    @apply rounded-xl border border-chalk bg-paper p-6 sm:p-8;
+  }
+
+  .chat-textarea {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    box-shadow: none;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .chat-textarea:focus,
+  .chat-textarea:focus-visible {
+    outline: none;
+    box-shadow: none;
+  }
+
+  .chat-textarea::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @keyframes fade-in {

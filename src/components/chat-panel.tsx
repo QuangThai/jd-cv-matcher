@@ -6,19 +6,21 @@ import { ChatInput } from "./chat-input";
 import { SuggestedQuestions } from "./suggested-questions";
 import { getSuggestedQuestions, type ChatMessage } from "@/lib/llm/chat";
 import type { MatchReport } from "@/lib/types/match";
+import { cn } from "@/lib/utils/cn";
 
 type Props = {
   report: MatchReport | null;
+  defaultOpen?: boolean;
 };
 
-export function ChatPanel({ report }: Props) {
+export function ChatPanel({ report, defaultOpen = false }: Props) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isStreaming, setIsStreaming] = useState(false);
   const [streamingContent, setStreamingContent] = useState("");
   const [error, setError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [suggestedQuestions, setSuggestedQuestions] = useState<string[]>([]);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(defaultOpen);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -116,41 +118,52 @@ export function ChatPanel({ report }: Props) {
   if (!report) return null;
 
   return (
-    <div className="overflow-hidden rounded-xl border border-chalk bg-paper">
-      <button
-        type="button"
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex w-full items-center justify-between px-5 py-4 transition-colors hover:bg-mist/50"
-      >
-        <div className="flex items-center gap-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded border border-chalk bg-lavender-wash">
-            <svg className="size-4 text-iris" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
-            </svg>
-          </div>
-          <div className="text-left">
-            <span className="font-medium text-ink">Ask Atlas</span>
-            {messages.length > 0 && (
-              <span className="ml-2 text-xs text-fog">
-                {messages.filter((m) => m.role === "user").length} questions
-              </span>
-            )}
-          </div>
-        </div>
-        <svg
-          className={`size-4 text-fog transition-transform ${isOpen ? "rotate-180" : ""}`}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2}
-          viewBox="0 0 24 24"
-          aria-hidden
+    <div className="overflow-hidden rounded-xl border border-chalk bg-paper shadow-none">
+      {!defaultOpen && (
+        <button
+          type="button"
+          onClick={() => setIsOpen(!isOpen)}
+          className="flex w-full items-center justify-between px-5 py-4 transition-colors hover:bg-mist/50"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
+          <div className="flex items-center gap-3">
+            <div className="flex h-8 w-8 items-center justify-center rounded border border-chalk bg-lavender-wash">
+              <svg className="size-4 text-iris" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+              </svg>
+            </div>
+            <div className="text-left">
+              <span className="font-medium text-ink">Ask Atlas</span>
+              {messages.length > 0 && (
+                <span className="ml-2 text-xs text-fog">
+                  {messages.filter((m) => m.role === "user").length} questions
+                </span>
+              )}
+            </div>
+          </div>
+          <svg
+            className={`size-4 text-fog transition-transform ${isOpen ? "rotate-180" : ""}`}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            viewBox="0 0 24 24"
+            aria-hidden
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+      )}
 
-      {isOpen && (
-        <div className="flex flex-col border-t border-chalk">
+      {(isOpen || defaultOpen) && (
+        <div className={cn("flex flex-col", !defaultOpen && "border-t border-chalk")}>
+          {defaultOpen && (
+            <div className="border-b border-chalk px-5 py-4">
+              <p className="eyebrow mb-1">AI assistant</p>
+              <h3 className="text-lg font-medium text-carbon">Ask Atlas</h3>
+              <p className="mt-1 text-sm text-pencil">
+                Questions are answered from your analysis data — not guesswork.
+              </p>
+            </div>
+          )}
           <div className="flex max-h-[400px] flex-col gap-3 overflow-y-auto px-4 py-4">
             {messages.length === 0 && !isStreaming && !error && (
               <div className="flex flex-col items-center py-8 text-center">

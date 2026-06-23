@@ -11,16 +11,9 @@ import { JDInput } from "@/components/jd-input";
 import { CVMultiUpload } from "@/components/cv-multi-upload";
 import { AnalysisSubmitButton } from "@/components/analysis-submit-button";
 import { AnalysisProgress } from "@/components/analysis-progress";
-import { JDSummaryCard } from "@/components/jd-summary-card";
-import { CandidateOverviewTable } from "@/components/candidate-overview-table";
-import { CandidateAnalysisCard } from "@/components/candidate-analysis-card";
-import { RankingTable } from "@/components/ranking-table";
-import { FinalRecommendationCard } from "@/components/final-recommendation-card";
+import { AnalysisResultsView } from "@/components/analysis-results-view";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { SkeletonResults } from "@/components/skeleton";
-import { ChatPanel } from "@/components/chat-panel";
-import { RadarComparisonChart, ScoreDistributionChart } from "@/components/charts";
-import { PdfExportButton } from "@/components/pdf-export";
 import { BatchProgress } from "@/components/batch-progress";
 import { parseBatchSSE } from "@/lib/files/sse-parser";
 import { Button } from "@/components/ui";
@@ -446,134 +439,29 @@ export default function Home() {
               )}
 
               {report && (
-                <div className="animate-fade-in space-y-10">
-                  <div className="flex items-center justify-between">
-                    <button
-                      type="button"
-                      className="flex items-center gap-1.5 text-sm text-pencil transition-colors hover:text-signal-blue"
-                      onClick={() => {
-                        setReport(null);
-                        setError(null);
-                      }}
-                    >
-                      <span aria-hidden>←</span>
-                      <span>New analysis</span>
-                    </button>
-                  </div>
-
-                  <JDSummaryCard summary={report.jdSummary} />
-                  <CandidateOverviewTable
-                    candidates={report.candidateOverview}
-                  />
-                  <RankingTable ranking={report.candidateRanking} />
-
-                  {report.candidateAnalyses.length > 0 && (
-                    <div className="space-y-8 rounded-lg border border-chalk bg-paper p-6">
-                      <h3 className="text-sm font-medium text-carbon">
-                        Visualizations
-                      </h3>
-                      <ScoreDistributionChart
-                        analyses={report.candidateAnalyses}
-                      />
-                      {report.candidateAnalyses.length > 1 && (
-                        <RadarComparisonChart
-                          analyses={report.candidateAnalyses}
-                        />
-                      )}
-                    </div>
-                  )}
-
-                  <div className="stagger-children space-y-6">
-                    {report.candidateAnalyses.map((analysis) => {
-                      const rank = report.candidateRanking.find(
-                        (r) => r.candidateId === analysis.candidateId
-                      );
-                      return (
-                        <CandidateAnalysisCard
-                          key={analysis.candidateId}
-                          analysis={analysis}
-                          rank={rank?.rank}
-                        />
-                      );
-                    })}
-                  </div>
-
-                  <FinalRecommendationCard
-                    recommendation={report.finalRecommendation}
-                  />
-
-                  <div className="flex flex-wrap items-center gap-3 pt-2">
-                    {session?.user ? (
-                      <>
-                        <Button
-                          variant="outline"
-                          onClick={() => {
-                            setSaveTitle(
-                              `Analysis: ${report.jdSummary.jobTitle ?? "Untitled"} — ${new Date().toLocaleDateString()}`
-                            );
-                            setShowSaveDialog(true);
-                            setSaveSuccess(false);
-                          }}
-                        >
-                          Save analysis
-                        </Button>
-                        <PdfExportButton report={report} />
-                        <Link href="/history">
-                          <Button variant="outline">View history</Button>
-                        </Link>
-                      </>
-                    ) : (
-                      <Link href="/auth/signin">
-                        <Button>Sign in to save analysis</Button>
-                      </Link>
-                    )}
-                  </div>
-
-                  {showSaveDialog && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 p-4">
-                      <div className="w-full max-w-md space-y-4 rounded-lg border border-chalk bg-paper p-6">
-                        <h3 className="font-medium text-carbon">Save analysis</h3>
-                        {saveSuccess ? (
-                          <div className="rounded border border-chalk bg-mint-whisper px-4 py-3 text-sm text-success">
-                            Saved successfully
-                          </div>
-                        ) : (
-                          <>
-                            <input
-                              type="text"
-                              value={saveTitle}
-                              onChange={(e) => setSaveTitle(e.target.value)}
-                              placeholder="Name your analysis..."
-                              className="input-field"
-                              autoFocus
-                            />
-                            {saveError && (
-                              <p className="text-sm text-destructive">
-                                {saveError}
-                              </p>
-                            )}
-                            <div className="flex justify-end gap-2">
-                              <Button
-                                variant="outline"
-                                onClick={() => setShowSaveDialog(false)}
-                              >
-                                Cancel
-                              </Button>
-                              <Button
-                                onClick={handleSave}
-                                disabled={isSaving || !saveTitle.trim()}
-                              >
-                                {isSaving ? "Saving..." : "Save"}
-                              </Button>
-                            </div>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  <ChatPanel report={report} />
-                </div>
+                <AnalysisResultsView
+                  report={report}
+                  session={session}
+                  onNewAnalysis={() => {
+                    setReport(null);
+                    setError(null);
+                  }}
+                  showSaveDialog={showSaveDialog}
+                  setShowSaveDialog={setShowSaveDialog}
+                  saveTitle={saveTitle}
+                  setSaveTitle={setSaveTitle}
+                  saveError={saveError}
+                  saveSuccess={saveSuccess}
+                  isSaving={isSaving}
+                  onSave={handleSave}
+                  onOpenSaveDialog={() => {
+                    setSaveTitle(
+                      `Analysis: ${report.jdSummary.jobTitle ?? "Untitled"} — ${new Date().toLocaleDateString()}`
+                    );
+                    setSaveSuccess(false);
+                    setShowSaveDialog(true);
+                  }}
+                />
               )}
             </div>
           </div>

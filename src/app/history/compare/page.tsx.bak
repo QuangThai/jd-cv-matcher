@@ -1,0 +1,21 @@
+import { Suspense } from "react";
+import CompareClient from "./compare-client";
+
+export const dynamic = "force-dynamic";
+
+export default function ComparePage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <div className="size-4 animate-spin rounded-full border-2 border-primary border-r-transparent" />
+            Loading...
+          </div>
+        </div>
+      }
+    >
+      <CompareClient />
+    </Suspense>
+  );
+}

@@ -1,0 +1,294 @@
+@import "tailwindcss";
+
+/* Design tokens — docs/styles/cssvariable.md + tailwindv4.md */
+@theme {
+  --color-ink: #1e2532;
+  --color-carbon: #0f141e;
+  --color-pencil: #656e83;
+  --color-fog: #828ba2;
+  --color-haze: #9fa6bb;
+  --color-paper: #ffffff;
+  --color-mist: #f7f9fc;
+  --color-lavender-wash: #f1f2ff;
+  --color-chalk: #d9deeb;
+  --color-ash: #e7eaf4;
+  --color-signal-blue: #1a91f0;
+  --color-deep-signal: #016fd0;
+  --color-iris: #5660e8;
+  --color-midnight: #1a1c6a;
+  --color-mint-whisper: #e7f4ed;
+  --color-blush-whisper: #ffebe4;
+  --color-rose-whisper: #edd7df;
+
+  /* Semantic aliases (shadcn-compat) */
+  --color-background: var(--color-paper);
+  --color-foreground: var(--color-ink);
+  --color-card: var(--color-paper);
+  --color-card-foreground: var(--color-ink);
+  --color-popover: var(--color-paper);
+  --color-popover-foreground: var(--color-ink);
+  --color-primary: var(--color-signal-blue);
+  --color-primary-foreground: var(--color-paper);
+  --color-secondary: var(--color-mist);
+  --color-secondary-foreground: var(--color-ink);
+  --color-muted: var(--color-mist);
+  --color-muted-foreground: var(--color-pencil);
+  --color-accent: var(--color-lavender-wash);
+  --color-accent-foreground: var(--color-ink);
+  --color-destructive: #d64545;
+  --color-destructive-foreground: var(--color-paper);
+  --color-border: var(--color-chalk);
+  --color-input: var(--color-chalk);
+  --color-ring: var(--color-signal-blue);
+  --color-success: #1a7a4a;
+  --color-warning: #b45309;
+
+  --font-sans: var(--font-outfit), "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --radius-sm: 4px;
+  --radius-md: 4px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-button: 36px;
+}
+
+:root {
+  --radius: 16px;
+  --section-gap: 5rem;
+  --page-max: 75rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01" on, "cv11" on;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  p {
+    max-width: 65ch;
+    line-height: 1.25;
+    letter-spacing: 0.021em;
+  }
+
+  h1 {
+    @apply font-medium text-carbon;
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    line-height: 1.07;
+    letter-spacing: 0.02em;
+    text-wrap: balance;
+  }
+
+  h2 {
+    @apply text-2xl font-medium text-carbon;
+    line-height: 1.14;
+    letter-spacing: 0.015em;
+    text-wrap: balance;
+  }
+
+  h3 {
+    @apply text-xl font-medium text-carbon;
+    line-height: 1.17;
+  }
+
+  h4 {
+    @apply text-lg font-medium text-ink;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+}
+
+@layer utilities {
+  .surface-mist {
+    background-color: var(--color-mist);
+  }
+
+  .surface-lavender {
+    background-color: var(--color-lavender-wash);
+  }
+
+  .surface-mint {
+    background-color: var(--color-mint-whisper);
+  }
+
+  .surface-blush {
+    background-color: var(--color-blush-whisper);
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .eyebrow {
+    @apply text-xs font-medium uppercase text-fog;
+    letter-spacing: 0.129em;
+  }
+
+  .page-container {
+    @apply mx-auto w-full px-6;
+    max-width: var(--page-max);
+  }
+
+  .feature-tile {
+    @apply rounded-xl border border-chalk bg-paper p-6 transition-colors hover:border-ash;
+  }
+
+  .section-band {
+    @apply -mx-6 rounded-none px-6 py-16 sm:mx-0 sm:rounded-2xl;
+  }
+
+  .input-field {
+    @apply w-full rounded border border-chalk bg-paper px-4 py-2.5 text-sm text-ink placeholder:text-fog transition-colors;
+    @apply focus:border-signal-blue focus:outline-none focus:ring-2 focus:ring-signal-blue/20;
+  }
+
+  .data-table th {
+    @apply pb-3 font-medium text-fog text-xs uppercase tracking-wide;
+    letter-spacing: 0.08em;
+  }
+
+  .data-table td {
+    @apply py-3.5 text-sm;
+  }
+
+  .data-table tr {
+    @apply border-b border-chalk last:border-0;
+  }
+
+  .rank-badge {
+    @apply flex h-7 w-7 items-center justify-center rounded-full text-xs font-semibold tabular-nums;
+  }
+
+  .rank-badge-1 {
+    @apply bg-lavender-wash text-iris;
+  }
+
+  .rank-badge-n {
+    @apply border border-chalk bg-mist text-pencil;
+  }
+
+  .stat-counter {
+    @apply inline-flex items-baseline gap-1.5;
+  }
+
+  .stat-counter-value {
+    @apply text-[31px] font-medium tabular-nums text-signal-blue;
+    line-height: 1.14;
+  }
+
+  .stat-counter-label {
+    @apply text-[31px] font-normal text-carbon;
+    line-height: 1.14;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.stagger-children > * {
+  animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.stagger-children > *:nth-child(1) {
+  animation-delay: 0ms;
+}
+.stagger-children > *:nth-child(2) {
+  animation-delay: 50ms;
+}
+.stagger-children > *:nth-child(3) {
+  animation-delay: 100ms;
+}
+.stagger-children > *:nth-child(4) {
+  animation-delay: 150ms;
+}
+.stagger-children > *:nth-child(5) {
+  animation-delay: 200ms;
+}
+.stagger-children > *:nth-child(6) {
+  animation-delay: 250ms;
+}
+.stagger-children > *:nth-child(7) {
+  animation-delay: 300ms;
+}
+.stagger-children > *:nth-child(8) {
+  animation-delay: 350ms;
+}
+
+@keyframes score-fill {
+  from {
+    width: 0%;
+  }
+}
+
+.score-bar {
+  animation: score-fill 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-fade-in,
+  .animate-scale-in,
+  .animate-slide-up,
+  .stagger-children > *,
+  .score-bar {
+    animation: none;
+  }
+}

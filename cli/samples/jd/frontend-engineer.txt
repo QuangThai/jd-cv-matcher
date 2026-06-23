@@ -1,0 +1,61 @@
+# Senior Frontend Engineer
+
+## About Us
+
+TechCorp is a fast-growing SaaS company building the next generation of analytics platforms. We're looking for a Senior Frontend Engineer to join our team and help us build world-class user interfaces.
+
+## Role Overview
+
+We are seeking an experienced Senior Frontend Engineer with strong expertise in React, TypeScript, and modern frontend development. You will be responsible for building and maintaining our main web application, working closely with our design and backend teams.
+
+## Requirements
+
+### Required Skills
+- **React**: 4+ years of professional experience with React.js
+- **TypeScript**: Strong proficiency in TypeScript
+- **CSS**: Expert knowledge of modern CSS, including Tailwind CSS
+- **State Management**: Experience with state management libraries (Redux, Zustand, or similar)
+- **Testing**: Experience with testing frameworks (Jest, React Testing Library, or Cypress)
+- **Version Control**: Proficient with Git
+- **API Integration**: Experience integrating REST APIs and GraphQL
+
+### Preferred Skills
+- **Next.js**: Experience with Next.js App Router
+- **Node.js**: Backend experience with Node.js
+- **Storybook**: Experience with Storybook for component development
+- **Performance**: Knowledge of web performance optimization and Core Web Vitals
+- **CI/CD**: Experience with CI/CD pipelines
+- **Accessibility**: Understanding of WCAG accessibility standards
+
+### Experience
+- 5+ years of professional software engineering experience
+- 3+ years specifically in frontend development
+
+### Education
+- Bachelor's degree in Computer Science or related field (preferred)
+
+### Tools & Technologies
+- React
+- TypeScript
+- Tailwind CSS
+- Git
+- REST APIs
+- GraphQL
+- Jest
+- Webpack or Vite
+- Docker (nice to have)
+
+## Responsibilities
+- Design and implement new features for the main web application
+- Write clean, maintainable, and well-tested code
+- Participate in code reviews and mentor junior developers
+- Collaborate with designers to implement pixel-perfect UIs
+- Optimize application performance and accessibility
+- Contribute to our component library and design system
+
+## What We Offer
+- Competitive salary and equity package
+- Remote-first work culture
+- Health, dental, and vision insurance
+- Annual learning and development budget
+- Home office setup stipend

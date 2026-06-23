@@ -1,0 +1,59 @@
+Jane Doe
+Senior Frontend Developer
+jane.doe@email.com | +1 (555) 123-4567
+
+## Professional Summary
+
+Senior Frontend Developer with 6 years of experience building scalable web applications. Expert in React, TypeScript, and modern frontend technologies. Passionate about creating intuitive user interfaces and mentoring junior developers.
+
+## Technical Skills
+
+- **Frontend**: React, TypeScript, JavaScript (ES6+), HTML5, CSS3, Tailwind CSS, Redux
+- **Frameworks**: Next.js, Express.js
+- **Testing**: Jest, React Testing Library, Cypress
+- **Tools**: Git, Webpack, Vite, Docker, Figma
+- **APIs**: REST APIs, GraphQL
+- **Backend**: Node.js, PostgreSQL basics
+
+## Work Experience
+
+### Senior Frontend Developer — DataViz Inc. (2021 - Present)
+- Led the redesign of the main analytics dashboard using React and TypeScript
+- Implemented a state management system using Redux Toolkit
+- Built a reusable component library used by 3 product teams
+- Reduced bundle size by 40% through code splitting and lazy loading
+- Mentored 4 junior developers through code reviews and pair programming
+- Set up CI/CD pipelines with GitHub Actions and automated testing
+
+### Frontend Developer — WebStart Solutions (2018 - 2021)
+- Developed responsive web applications using React and TypeScript
+- Integrated REST APIs and GraphQL endpoints
+- Implemented end-to-end testing with Cypress
+- Collaborated with UX designers to implement pixel-perfect designs
+- Contributed to the migration from class components to React hooks
+
+### Junior Developer — CodeLab Agency (2016 - 2018)
+- Built landing pages and marketing websites
+- Maintained legacy JavaScript applications
+- Introduced Git workflow improvements to the team
+
+## Education
+
+**B.S. Computer Science** — State University (2012 - 2016)
+- GPA: 3.7/4.0
+- Dean's List: 4 semesters
+
+## Certifications
+
+- AWS Certified Cloud Practitioner (2023)
+- Meta Front-End Developer Professional Certificate (2022)
+
+## Projects
+
+- **OpenDash**: Open-source dashboard framework with 2k GitHub stars
+- **React Form Builder**: Visual form builder for React applications
+
+## Languages
+
+- English (Native)
+- Spanish (Professional working proficiency)

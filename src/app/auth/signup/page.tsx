@@ -5,6 +5,46 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui";
 
+const DB_FEATURES_DISABLED =
+  typeof process !== "undefined" &&
+  process.env.NEXT_PUBLIC_DISABLE_DB_FEATURES === "true";
+
+function DisabledBanner() {
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center bg-paper px-6">
+      <div className="mx-auto max-w-md text-center">
+        <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl border border-chalk bg-mist">
+          <svg
+            className="size-7 text-fog"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={1.5}
+              d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
+            />
+          </svg>
+        </div>
+        <h1 className="text-2xl font-medium text-carbon">
+          No account required
+        </h1>
+        <p className="mt-3 text-sm text-pencil">
+          Account creation is not available in this environment.
+          Atlas Match runs fully without an account — just upload a JD
+          and CVs to start screening.
+        </p>
+        <Link href="/" className="mt-8 inline-block">
+          <Button>Start screening</Button>
+        </Link>
+      </div>
+    </div>
+  );
+}
+
 export default function SignUpPage() {
   const router = useRouter();
   const [name, setName] = useState("");
@@ -12,6 +52,8 @@ export default function SignUpPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  if (DB_FEATURES_DISABLED) return <DisabledBanner />;
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();

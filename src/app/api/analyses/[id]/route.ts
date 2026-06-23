@@ -1,12 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db/prisma";
+import { isDbDisabled } from "@/lib/env";
+
+function dbDisabledResponse() {
+  return NextResponse.json(
+    { error: "Database features are disabled in this environment." },
+    { status: 503 },
+  );
+}
 
 /** GET /api/analyses/[id] — get single analysis */
 export async function GET(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (isDbDisabled) return dbDisabledResponse();
+
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -35,6 +45,8 @@ export async function DELETE(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (isDbDisabled) return dbDisabledResponse();
+
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

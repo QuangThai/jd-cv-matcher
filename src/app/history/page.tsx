@@ -8,6 +8,10 @@ import { AppHeader } from "@/components/app-header";
 import { PageFooter } from "@/components/page-footer";
 import { Button } from "@/components/ui";
 
+const DB_FEATURES_DISABLED =
+  typeof process !== "undefined" &&
+  process.env.NEXT_PUBLIC_DISABLE_DB_FEATURES === "true";
+
 type AnalysisItem = {
   id: string;
   title: string;
@@ -17,6 +21,45 @@ type AnalysisItem = {
   matchLevel: string | null;
   createdAt: string;
 };
+
+function DisabledBanner() {
+  return (
+    <div className="flex min-h-screen flex-col bg-paper">
+      <AppHeader />
+      <main className="flex flex-1 items-center justify-center px-6 py-16">
+        <div className="mx-auto max-w-md text-center">
+          <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl border border-chalk bg-mist">
+            <svg
+              className="size-7 text-fog"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
+              />
+            </svg>
+          </div>
+          <h1 className="text-2xl font-medium text-carbon">
+            History not available
+          </h1>
+          <p className="mt-3 text-sm text-pencil">
+            Saved analyses are disabled in this environment.
+            Your analysis results are still fully available during the current session.
+          </p>
+          <Link href="/" className="mt-8 inline-block">
+            <Button>Back to analysis</Button>
+          </Link>
+        </div>
+      </main>
+      <PageFooter />
+    </div>
+  );
+}
 
 export default function HistoryPage() {
   const { data: session, status } = useSession();
@@ -29,6 +72,8 @@ export default function HistoryPage() {
   const [error, setError] = useState<string | null>(null);
   const [deleting, setDeleting] = useState<string | null>(null);
   const limit = 20;
+
+  if (DB_FEATURES_DISABLED) return <DisabledBanner />;
 
   const fetchAnalyses = useCallback(async () => {
     setLoading(true);

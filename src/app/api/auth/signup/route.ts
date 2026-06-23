@@ -1,8 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/db/prisma";
+import { isDbDisabled } from "@/lib/env";
 
 export async function POST(request: NextRequest) {
+  if (isDbDisabled) {
+    return NextResponse.json(
+      { error: "Account creation is not available in this environment." },
+      { status: 503 },
+    );
+  }
+
   try {
     const { name, email, password } = await request.json();
 

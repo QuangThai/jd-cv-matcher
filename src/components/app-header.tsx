@@ -5,6 +5,10 @@ import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui";
 
+const DB_FEATURES_DISABLED =
+  typeof process !== "undefined" &&
+  process.env.NEXT_PUBLIC_DISABLE_DB_FEATURES === "true";
+
 export function AppHeader() {
   const { data: session } = useSession();
   const pathname = usePathname();
@@ -42,8 +46,10 @@ export function AppHeader() {
         </Link>
 
         <nav className="flex items-center gap-4 sm:gap-5" aria-label="Main">
-          {navLink("/history", "History")}
-          {session?.user ? (
+          {!DB_FEATURES_DISABLED && navLink("/history", "History")}
+          {DB_FEATURES_DISABLED ? (
+            <span className="text-xs text-fog">No account required</span>
+          ) : session?.user ? (
             <span className="hidden max-w-[160px] truncate text-sm text-pencil sm:inline">
               {session.user.name ?? session.user.email}
             </span>

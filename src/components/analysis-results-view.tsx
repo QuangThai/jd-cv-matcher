@@ -4,6 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import type { Session } from "next-auth";
 import { JDSummaryCard } from "@/components/jd-summary-card";
+
+const DB_FEATURES_DISABLED =
+  typeof process !== "undefined" &&
+  process.env.NEXT_PUBLIC_DISABLE_DB_FEATURES === "true";
 import { CandidateOverviewTable } from "@/components/candidate-overview-table";
 import { RankingTable } from "@/components/ranking-table";
 import { CandidateAnalysisCard } from "@/components/candidate-analysis-card";
@@ -111,7 +115,9 @@ export function AnalysisResultsView({
           <div className="flex shrink-0 flex-wrap gap-2">
             {!hideSaveActions && (
               <>
-                {session?.user ? (
+                {DB_FEATURES_DISABLED ? (
+                  <PdfExportButton report={report} />
+                ) : session?.user ? (
                   <>
                     <Button
                       variant="outline"

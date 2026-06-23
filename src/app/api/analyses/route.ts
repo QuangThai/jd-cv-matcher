@@ -1,9 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db/prisma";
+import { isDbDisabled } from "@/lib/env";
+
+function dbDisabledResponse() {
+  return NextResponse.json(
+    { error: "Database features are disabled in this environment." },
+    { status: 503 },
+  );
+}
 
 /** GET /api/analyses — list user's analyses (paginated, searchable) */
 export async function GET(request: NextRequest) {
+  if (isDbDisabled) return dbDisabledResponse();
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -52,6 +61,7 @@ export async function GET(request: NextRequest) {
 
 /** POST /api/analyses — save analysis */
 export async function POST(request: NextRequest) {
+  if (isDbDisabled) return dbDisabledResponse();
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

@@ -123,32 +123,35 @@ export default function HistoryPage() {
             </div>
           </div>
 
-          <div className="relative">
-            <svg
-              className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-fog"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-              viewBox="0 0 24 24"
-              aria-hidden
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+          <label className="block">
+            <span className="sr-only">Search analyses by title</span>
+            <div className="flex items-center gap-3 rounded border border-chalk bg-paper px-4 py-2.5">
+              <svg
+                className="size-4 shrink-0 text-fog"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                viewBox="0 0 24 24"
+                aria-hidden
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+              <input
+                type="search"
+                value={query}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  setPage(1);
+                }}
+                placeholder="Search by title..."
+                className="search-input min-w-0 flex-1 border-0 bg-transparent p-0 text-sm text-ink placeholder:text-fog shadow-none outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0"
               />
-            </svg>
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => {
-                setQuery(e.target.value);
-                setPage(1);
-              }}
-              placeholder="Search by title..."
-              className="input-field pl-10"
-            />
-          </div>
+            </div>
+          </label>
 
           {error && (
             <div className="rounded-lg border border-chalk bg-blush-whisper px-4 py-3 text-sm text-destructive">

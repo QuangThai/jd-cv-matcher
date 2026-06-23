@@ -57,7 +57,7 @@ export function ChatInput({ onSend, disabled, placeholder }: Props) {
 
   return (
     <div className="border-t border-chalk bg-mist/30 p-4 sm:p-5">
-      <div className="flex items-end gap-3 rounded-xl border border-chalk bg-paper p-3 transition-[border-color] duration-150 focus-within:border-signal-blue">
+      <div className="flex items-end gap-3 rounded-xl border border-chalk bg-paper p-3">
         <textarea
           ref={textareaRef}
           value={value}
@@ -89,7 +89,7 @@ export function ChatInput({ onSend, disabled, placeholder }: Props) {
           <SendIcon className="size-4" />
         </button>
       </div>
-      <p className="mt-2 text-center text-xs text-fog">
+      <p className="mt-2 text-left text-xs text-fog">
         Enter to send · Shift+Enter for new line
       </p>
     </div>

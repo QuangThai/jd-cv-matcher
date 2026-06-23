@@ -22,7 +22,8 @@ export function calculateRequiredSkillsScore(
   if (requiredSkills.length === 0) return 0;
 
   const matchedSkills = requiredSkills.filter((req) => {
-    const reqName = req.name.toLowerCase();
+    const reqName = (req.name || "").toLowerCase().trim();
+    if (!reqName) return false; // Empty name can't match
     return cv.skills.some((s) => s.value.toLowerCase().includes(reqName));
   });
 

@@ -216,6 +216,18 @@
     box-shadow: none;
   }
 
+  .search-input {
+    -webkit-appearance: none;
+    appearance: none;
+    box-shadow: none;
+  }
+
+  .search-input:focus,
+  .search-input:focus-visible {
+    outline: none;
+    box-shadow: none;
+  }
+
   .chat-textarea::-webkit-scrollbar {
     display: none;
   }

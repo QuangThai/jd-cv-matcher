@@ -62,9 +62,10 @@ function generateRequirementMatches(
   const cvText = collectCVText(cv);
 
   for (const req of allRequirements) {
-    const reqLower = req.name.toLowerCase();
-    const foundInCV = findEvidence(cvText, reqLower);
-    const partialEvidence = findPartialEvidence(cvText, reqLower);
+    const reqName = (req.name || "").toLowerCase().trim();
+    if (!reqName) continue; // Skip empty-named requirements
+    const foundInCV = findEvidence(cvText, reqName);
+    const partialEvidence = findPartialEvidence(cvText, reqName);
 
     if (foundInCV) {
       matched.push({

@@ -5,14 +5,26 @@ const NullableNumber = z.number().nullable().optional().default(null);
 const EmptyArray = <T extends z.ZodTypeAny>(schema: T) =>
   z.array(schema).optional().default([]);
 
-export const RequirementSchema = z.object({
-  id: z.string().default(""),
-  name: z.string().default(""),
-  category: z.string().default(""),
-  priority: z.enum(["required", "preferred", "nice_to_have"]).default("required"),
-  evidenceFromJD: z.string().default(""),
-  weight: z.number().min(0).max(100).default(50),
-});
+export const RequirementSchema = z.preprocess(
+  (val) => {
+    if (typeof val === "object" && val !== null) {
+      const input = val as Record<string, unknown>;
+      // Normalize 'requirement' → 'name' (LLM sometimes uses 'requirement')
+      if (input.requirement && !input.name) {
+        input.name = input.requirement;
+      }
+    }
+    return val;
+  },
+  z.object({
+    id: z.string().default(""),
+    name: z.string().default(""),
+    category: z.string().default(""),
+    priority: z.enum(["required", "preferred", "nice_to_have"]).default("required"),
+    evidenceFromJD: z.string().default(""),
+    weight: z.number().min(0).max(100).default(50),
+  })
+);
 
 export const JDExtractSchema = z.object({
   jobTitle: NullableString,
